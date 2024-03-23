@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gossip/Config/colors.dart';
@@ -67,16 +68,35 @@ class ChatBubble extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(imageUrl)),
-                      Text(
-                        message,
-                        style:
-                            Theme.of(context).textTheme.labelMedium!.copyWith(
-                                  color: darkOnPrimaryContainer,
-                                  fontSize: 14,
-                                ),
-                      )
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: imageUrl,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+
+                        // child: Image.network(imageUrl),
+                      ),
+                      message == ""
+                          ? Container()
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      message == ""
+                          ? Container()
+                          : Text(
+                              message,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                    color: darkOnPrimaryContainer,
+                                    fontSize: 14,
+                                  ),
+                            )
                     ],
                   ),
           ),

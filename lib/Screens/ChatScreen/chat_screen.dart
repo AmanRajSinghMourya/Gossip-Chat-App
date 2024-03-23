@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:gossip/Config/colors.dart';
 import 'package:gossip/Config/images.dart';
@@ -95,9 +94,9 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: Container(
-        margin: EdgeInsets.only(bottom: 40),
-        padding:
-            const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 50),
+        // margin: EdgeInsets.only(bottom: 40),
+        // padding:
+        // const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 50),
         child: Column(
           children: [
             Expanded(
@@ -144,22 +143,41 @@ class ChatScreen extends StatelessWidget {
                   Obx(
                     () => chatController.selectedImage.value != ""
                         ? Positioned(
-                            bottom: 50,
+                            bottom: 0,
                             left: 0,
                             right: 0,
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              height: 300,
-                              // width: 100,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(
-                                    File(chatController.selectedImage.value),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    bottom: 0,
+                                    left: 10,
+                                    right: 10,
+                                  ),
+                                  height: 300,
+                                  // width: 100,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.contain,
+                                      image: FileImage(
+                                        File(
+                                            chatController.selectedImage.value),
+                                      ),
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: darkPrimaryColor,
                                   ),
                                 ),
-                                borderRadius: BorderRadius.circular(20),
-                                color: darkPrimaryColor,
-                              ),
+                                Positioned(
+                                    right: 10,
+                                    top: 0,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        chatController.selectedImage.value = "";
+                                      },
+                                      icon: Icon(Icons.cancel),
+                                    ))
+                              ],
                             ),
                           )
                         : Container(),
@@ -168,9 +186,10 @@ class ChatScreen extends StatelessWidget {
               ),
             ),
             FloatingButtonSend(
-                messageController: messageController,
-                chatController: chatController,
-                userModel: userModel)
+              messageController: messageController,
+              chatController: chatController,
+              userModel: userModel,
+            )
           ],
         ),
       ),

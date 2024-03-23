@@ -39,7 +39,7 @@ class FloatingButtonSend extends StatelessWidget {
             child: Icon(Icons.emoji_emotions),
           ),
           SizedBox(
-            width: 10,
+            width: 5,
           ),
           Expanded(
             child: TextFormField(
@@ -55,26 +55,35 @@ class FloatingButtonSend extends StatelessWidget {
             ),
           ),
           //Image picker
-          InkWell(
-            onTap: () async {
-              chatController.selectedImage.value =
-                  await imagePickerController.pickImage();
-            },
-            child: Container(
-              height: 30,
-              width: 30,
-              child: Icon(
-                Icons.image,
-              ),
-            ),
+
+          Obx(
+            () => chatController.selectedImage.value != ""
+                ? SizedBox()
+                : InkWell(
+                    onTap: () async {
+                      chatController.selectedImage.value =
+                          await imagePickerController.pickImage();
+                    },
+                    child: Container(
+                      height: 30,
+                      width: 30,
+                      child: Icon(
+                        Icons.image,
+                      ),
+                    ),
+                  ),
+          ),
+          SizedBox(
+            width: 10,
           ),
           //send message button
           Obx(
-            () => isTexting.value == ""
-                ? SvgPicture.asset(AssetsImages.mic)
-                : InkWell(
+            () => isTexting.value != "" ||
+                    chatController.selectedImage.value != ""
+                ? InkWell(
                     onTap: () {
-                      if (messageController.text.isNotEmpty) {
+                      if (messageController.text.isNotEmpty ||
+                          chatController.selectedImage.value.isNotEmpty) {
                         chatController.sendMessage(
                           userModel.id!,
                           messageController.text,
@@ -82,14 +91,18 @@ class FloatingButtonSend extends StatelessWidget {
                         );
                         messageController.clear();
                         isTexting.value = "";
+                        chatController.selectedImage.value = "";
                       }
                     },
                     child: Container(
                       height: 30,
                       width: 30,
-                      child: SvgPicture.asset(AssetsImages.send),
+                      child: chatController.isLoading.value
+                          ? CircularProgressIndicator()
+                          : SvgPicture.asset(AssetsImages.send),
                     ),
-                  ),
+                  )
+                : SvgPicture.asset(AssetsImages.mic),
           ),
         ],
       ),

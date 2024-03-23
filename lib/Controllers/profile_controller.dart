@@ -14,9 +14,9 @@ class ProfileController extends GetxController {
   RxBool isUpdating = false.obs;
   Rx<UserModel> user = UserModel().obs;
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    getUserDetails();
+    await getUserDetails();
   }
 
   Future<void> getUserDetails() async {

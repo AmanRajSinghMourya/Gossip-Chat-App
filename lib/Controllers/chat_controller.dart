@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:gossip/Controllers/profile_controller.dart';
 import 'package:gossip/Model/chat_model.dart';
 import 'package:gossip/Model/chat_room_modal.dart';
@@ -12,6 +13,7 @@ class ChatController extends GetxController {
   final auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
   final uuid = Uuid();
+  RxBool isLoading = false.obs;
 
   ProfileController profileController = Get.put(ProfileController());
   RxString selectedImage = "".obs;
@@ -29,14 +31,23 @@ class ChatController extends GetxController {
     String message,
     UserModel reciever,
   ) async {
+    isLoading.value = true;
+
     String roomId = getRoomId(targetUserId);
     String chatId = uuid.v6();
 
     DateTime dateTime = DateTime.now();
     String currentTime = DateFormat("hh:mm a").format(dateTime);
 
+    RxString imageUrl = "".obs;
+    if (selectedImage.value.isNotEmpty) {
+      imageUrl.value =
+          await profileController.uploadImageToFirebase(selectedImage.value);
+    }
+
     var newChatModel = ChatModel(
       message: message,
+      imageUrl: imageUrl.value,
       id: chatId,
       senderId: auth.currentUser!.uid,
       senderName: profileController.user.value.name,
@@ -64,8 +75,11 @@ class ChatController extends GetxController {
           .set(
             newChatModel.toJson(),
           );
+      selectedImage.value = "";
+      isLoading.value = false;
     } catch (e) {
       print(e);
+      isLoading.value = false;
     }
   }
 
