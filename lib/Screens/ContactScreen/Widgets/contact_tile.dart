@@ -16,7 +16,7 @@ class ContactTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        voidCallback;
+        voidCallback.call();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

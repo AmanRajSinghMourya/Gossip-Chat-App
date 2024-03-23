@@ -3,6 +3,7 @@ import 'package:gossip/Screens/AuthScreen/auth_screen.dart';
 import 'package:gossip/Screens/ContactScreen/contact_screen.dart';
 import 'package:gossip/Screens/HomeScreen/homescreen.dart';
 import 'package:gossip/Screens/CurrentUserProfileScreen/current_user_profile_screen.dart';
+import 'package:gossip/Screens/NewGroup/make_new_group.dart';
 
 var pagePath = [
   GetPage(
@@ -13,6 +14,12 @@ var pagePath = [
   GetPage(
     name: "/homePage",
     page: () => HomeScreen(),
+    transition: Transition.leftToRight,
+  ),
+
+  GetPage(
+    name: "/groupPage",
+    page: () => NewGroup(),
     transition: Transition.leftToRight,
   ),
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:gossip/Controllers/contact_collection.dart';
 import 'package:gossip/Controllers/profile_controller.dart';
 import 'package:gossip/Model/chat_model.dart';
 import 'package:gossip/Model/chat_room_modal.dart';
@@ -13,7 +14,8 @@ class ChatController extends GetxController {
   final db = FirebaseFirestore.instance;
   final uuid = Uuid();
   RxBool isLoading = false.obs;
-
+  ContactCollectionController collectionController =
+      Get.put(ContactCollectionController());
   ProfileController profileController = Get.put(ProfileController());
   RxString selectedImage = "".obs;
   String getRoomId(String targetUserId) {
@@ -74,6 +76,8 @@ class ChatController extends GetxController {
           .set(
             newChatModel.toJson(),
           );
+      await collectionController.saveContact(reciever);
+
       selectedImage.value = "";
       isLoading.value = false;
     } catch (e) {

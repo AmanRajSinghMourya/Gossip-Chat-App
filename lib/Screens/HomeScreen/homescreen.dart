@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gossip/Config/colors.dart';
 import 'package:gossip/Config/strings.dart';
 import 'package:gossip/Controllers/contact_collection.dart';
+import 'package:gossip/Screens/GroupScreen/group_screen.dart';
 import 'package:gossip/Screens/HomeScreen/Widgets/chat_list.dart';
 import 'package:gossip/Screens/HomeScreen/Widgets/home_screen_drawer.dart';
 import 'package:gossip/Screens/HomeScreen/Widgets/tabbar.dart';
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         child: Icon(
           Icons.add,
           color: darkOnPrimaryContainer,
-          size: 25,
+          size: 30,
         ),
       ),
 
@@ -75,10 +76,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
           ChatList(),
 
-          //TAB - 2
-          ListView(
-            children: [ListTile()],
-          ),
+          //TAB - 2 - Group
+          GroupScreen(),
           //TAB - 3
           ListView(
             children: [ListTile()],

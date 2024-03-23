@@ -51,7 +51,42 @@ class ContactCollectionController extends GetxController {
     chatRoomList.value = temoChatRoomList
         .where((element) => element.id!.contains(auth.currentUser!.uid))
         .toList();
-    ;
+
     print(chatRoomList);
+  }
+
+  //Save contact of the user from which we had a conversation
+  //this is called when we send a message to some one
+
+  Future<void> saveContact(UserModel user) async {
+    try {
+      await db
+          .collection("users")
+          .doc(auth.currentUser!.uid)
+          .collection("contacts")
+          .doc(user.id)
+          .set(user.toJson());
+    } catch (e) {
+      print("EROOR OCCURED");
+    }
+  }
+
+  //To fetch the Contact we use Stream
+  Stream<List<UserModel>> getContact() {
+    print("GET CONTACT WORKING");
+    return db
+        .collection("users")
+        .doc(auth.currentUser!.uid)
+        .collection("contacts")
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => UserModel.fromJson(
+                  e.data(),
+                ),
+              )
+              .toList(),
+        );
   }
 }

@@ -26,7 +26,7 @@ class FloatingButtonSend extends StatelessWidget {
     RxString isTexting = "".obs;
     return Container(
       margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: darkPrimaryColor,
         borderRadius: BorderRadius.circular(20),

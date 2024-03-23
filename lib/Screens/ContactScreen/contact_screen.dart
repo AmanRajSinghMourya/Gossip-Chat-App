@@ -75,7 +75,10 @@ class ContactScreen extends StatelessWidget {
               ContactTile(
                 name: "New Group",
                 iconData: Icons.group,
-                voidCallback: () {},
+                voidCallback: () {
+                  Get.offAllNamed('/groupPage');
+                  // Get.to(NewGroup());
+                },
               ),
               SizedBox(
                 height: 10,

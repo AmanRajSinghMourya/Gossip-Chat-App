@@ -4,17 +4,20 @@ import 'package:gossip/Config/strings.dart';
 
 thisTabbar(tabController, BuildContext context) {
   return PreferredSize(
-    preferredSize: Size.fromHeight(60),
+    preferredSize: Size.fromHeight(50),
     child: Container(
+      margin: const EdgeInsets.only(bottom: 10),
       child: TabBar(
-        // indicatorSize: TabBarIndicatorSize.label,
-        indicatorWeight: 4,
+        indicatorColor: darkOnPrimaryContainer,
+        indicatorWeight: 2,
+        indicatorSize: TabBarIndicatorSize.tab,
         unselectedLabelColor: darkOnSecondaryContainer,
         controller: tabController,
-        labelStyle: Theme.of(context)
-            .textTheme
-            .labelLarge!
-            .copyWith(color: darkOnPrimaryContainer),
+        labelStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              fontSize: 18,
+              letterSpacing: 1,
+              color: darkOnPrimaryContainer,
+            ),
         tabs: [
           Text(AppStrings.chats),
           Text(AppStrings.groups),
