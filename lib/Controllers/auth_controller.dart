@@ -15,8 +15,8 @@ class AuthenticationController extends GetxController {
     //https://firebase.google.com/docs/auth/flutter/password-auth
     loading.value = true;
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await authentication.signInWithEmailAndPassword(
+          email: email, password: password);
 
       Get.offAllNamed(
         "/homePage",
@@ -37,8 +37,8 @@ class AuthenticationController extends GetxController {
   Future<void> signInDetails(String email, String password, String name) async {
     loading.value = true;
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await authentication.createUserWithEmailAndPassword(
+          email: email, password: password);
 
       //new user created so make entry in database
       await makeUser(email, name);
@@ -83,3 +83,18 @@ class AuthenticationController extends GetxController {
     }
   }
 }
+
+
+//.collection("users"): This line indicates that you're referencing the "users" collection within your Firestore database. 
+//Collections in Firestore are containers for documents, somewhat analogous to tables in a traditional database.
+
+// .doc(authentication.currentUser!.uid): Here, you're specifying a document within the 
+// "users" collection. We are using Firebase Authentication (authentication) to
+// get the current user, and then accessing its uid property. The uid (User ID) is a unique 
+// identifier assigned to each user by Firebase Authentication. So, you're accessing the document in 
+// the "users" collection that corresponds to the currently authenticated user.
+
+//.set(userModel.toJson()): This line is setting the data of the document retrieved in the 
+//previous step. It's using the set method to write data to the document. userModel.toJson() suggests that you're 
+//converting a user model object (userModel) to a JSON format. Firebase Firestore accepts data in JSON format,
+// so you're essentially setting the data of the document to the JSON representation of the user model.

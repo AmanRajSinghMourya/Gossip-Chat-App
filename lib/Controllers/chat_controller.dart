@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:gossip/Controllers/profile_controller.dart';
 import 'package:gossip/Model/chat_model.dart';
 import 'package:gossip/Model/chat_room_modal.dart';
