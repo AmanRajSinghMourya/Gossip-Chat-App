@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gossip/Config/colors.dart';
@@ -5,6 +6,7 @@ import 'package:gossip/Config/images.dart';
 import 'package:gossip/Controllers/contact_collection.dart';
 import 'package:gossip/Controllers/group_controller.dart';
 import 'package:gossip/Screens/HomeScreen/Widgets/chat_list_tile.dart';
+import 'package:gossip/Screens/NewGroup/new_group_screen.dart';
 
 class NewGroup extends StatelessWidget {
   const NewGroup({super.key});
@@ -17,10 +19,18 @@ class NewGroup extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: darkBackgroundColor,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.arrow_forward,
+      floatingActionButton: Obx(
+        () => FloatingActionButton(
+          onPressed: () {
+            if (groupController.groupList.isEmpty) {
+              Get.snackbar("Error", "Please select atleast one member");
+            } else {
+              Get.to(NewGroupScreen());
+            }
+          },
+          child: Icon(
+            Icons.arrow_forward,
+          ),
         ),
       ),
       body: Column(
@@ -29,10 +39,46 @@ class NewGroup extends StatelessWidget {
             () => Row(
               children: groupController.groupList
                   .map(
-                    (element) => Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.white,
+                    (element) => Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(8),
+                          height: 70,
+                          width: 70,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl:
+                                  element.image ?? AssetsImages.deafultImage,
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: InkWell(
+                            onTap: () {
+                              groupController.groupList.remove(element);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Icon(
+                                Icons.close,
+                                size: 15,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   )
                   .toList(),
